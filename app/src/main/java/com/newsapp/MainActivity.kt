@@ -26,16 +26,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
-        viewModel.getHeadlines()
-
-        viewModel.getNewsResult().observe(this, Observer {
-            Log.wtf("NEWS", it[0].content)
-        })
-
-        viewModel.getNewsError().observe(this, Observer<String>{
-            Log.wtf("NEWS", it)
-        })
     }
 
     override fun onDestroy() {

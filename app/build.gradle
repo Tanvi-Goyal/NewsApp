@@ -54,6 +54,7 @@ dependencies {
 
     implementation "androidx.recyclerview:recyclerview:$recycler_view_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "com.airbnb.android:lottie:$lottie_version"
 
     //Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
@@ -92,6 +93,12 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_logging_version"
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+
+    //Glide
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
