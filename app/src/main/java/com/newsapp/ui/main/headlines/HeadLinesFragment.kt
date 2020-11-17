@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -49,14 +48,11 @@ class HeadLinesFragment : Fragment() {
         adapter = HeadlinesAdapter()
 
         adapter.onItemClick = { news ->
-            findNavController().navigate(
-                R.id.navigate_to_news_detail,
-                bundleOf("id" to news.id), null
-            )
+            val directions = news.url?.let { HeadLinesFragmentDirections.navigateToNewsDetail(it) }
+            directions?.let { findNavController().navigate(it) }
         }
 
         binding.swipeRefreshLayout.setOnRefreshListener { setViewModelObservers() }
-
         binding.recyclerViewHeadlines.adapter = adapter
     }
 

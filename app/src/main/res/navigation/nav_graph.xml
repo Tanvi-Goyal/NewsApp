@@ -9,7 +9,7 @@
         android:id="@+id/headlinesFragment"
         android:name="com.newsapp.ui.main.headlines.HeadLinesFragment"
         android:label="fragment_headlines"
-        tools:layout="@layout/fragment_head_lines" >
+        tools:layout="@layout/fragment_head_lines">
         <action
             android:id="@+id/navigate_to_favorities"
             app:destination="@id/favoritiesFragment"
@@ -20,7 +20,11 @@
 
         <action
             android:id="@+id/navigate_to_news_detail"
-            app:destination="@id/newsDetailFragment"/>
+            app:destination="@id/newsDetailFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
 
     <fragment
@@ -33,24 +37,10 @@
         android:id="@+id/newsDetailFragment"
         android:name="com.newsapp.ui.main.newsDetail.NewsDetailFragment"
         android:label="fragment_news_detail"
-        tools:layout="@layout/fragment_news_detail" >
+        tools:layout="@layout/fragment_news_detail">
 
+        <argument
+            android:name="url"
+            app:argType="string" />
     </fragment>
-
-<!--    <fragment-->
-<!--        android:id="@+id/viewPagerFragment"-->
-<!--        android:name="com.newsapp.ui.main.favorities.FavoritesFragment"-->
-<!--        android:label="fragment_view_pager"-->
-<!--        tools:layout="@layout/fragment_favorities" >-->
-<!--        <action-->
-<!--            android:id="@+id/action_viewPagerFragment_to_headlinesFragment"-->
-<!--            app:destination="@id/headlinesFragment" />-->
-<!--        <action-->
-<!--            android:id="@+id/action_viewPagerFragment_to_newsDetailFragment"-->
-<!--            app:destination="@id/newsDetailFragment" />-->
-<!--        <action-->
-<!--            android:id="@+id/action_viewPagerFragment_to_bookmarksFragment3"-->
-<!--            app:destination="@id/favoritiesFragment" />-->
-<!--    </fragment>-->
-<!--    -->
 </navigation>

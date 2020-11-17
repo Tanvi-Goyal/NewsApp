@@ -38,7 +38,7 @@
                 android:id="@+id/bookmarkCheckbox"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:layout_margin="@dimen/_4sdp"
+                android:layout_margin="@dimen/_10sdp"
                 android:background="@drawable/fav_selector"
                 android:button="@null"
                 android:buttonTint="@color/white"
