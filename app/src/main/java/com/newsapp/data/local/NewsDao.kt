@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.newsapp.data.entities.News
-import io.reactivex.Single
+import io.reactivex.Observable
 
 @Dao
 interface NewsDao {
@@ -18,5 +18,5 @@ interface NewsDao {
     fun insertAllHeadlines(news: List<News>)
 
     @Query("SELECT * FROM news order by publishedAt desc")
-    fun getAllHeadlines(): LiveData<List<News>>
+    fun getAllHeadlines(): Observable<List<News>>
 }

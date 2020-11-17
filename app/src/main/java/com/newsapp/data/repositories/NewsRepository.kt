@@ -12,26 +12,24 @@ class NewsRepository @Inject constructor(
     private val newsAPI: NewsAPI
 ) {
 
-    fun getHeadlines(): Observable<List<News>> {
-        val observableFromApi = getHeadLinesFromAPI()
-        return observableFromApi
-//        val observableFromDb = getHeadLinesFromDB()
-//        return Observable.concatArrayEager(observableFromApi, observableFromDb)
+    fun getHeadlines(category: String): Observable<List<News>> {
+        val observableFromApi = getHeadLinesFromAPI(category)
+        val observableFromDb = getHeadLinesFromDB()
+        return Observable.concatArrayEager(observableFromApi, observableFromDb)
     }
 
-    private fun getHeadLinesFromAPI(): Observable<List<News>> {
-        return newsAPI.getHeadlines()
+    private fun getHeadLinesFromAPI(category: String): Observable<List<News>> {
+        return newsAPI.getHeadlines(category)
             .flatMap { response -> Observable.fromArray(response.articles!!) }
             .doOnNext { newsList ->
                 newsDao.insertAllHeadlines(newsList)
             }
     }
 
-//    private fun getHeadLinesFromDB(): Observable<List<News>> {
-//        return newsDao.getAllHeadlines()
-//            .toObservable()
-//            .doOnNext {
-//                Log.e("REPOSITORY DB *** ", it.size.toString())
-//            }
-//    }
+    private fun getHeadLinesFromDB(): Observable<List<News>> {
+        return newsDao.getAllHeadlines()
+            .doOnNext {
+                Log.e("REPOSITORY DB *** ", it.size.toString())
+            }
+    }
 }

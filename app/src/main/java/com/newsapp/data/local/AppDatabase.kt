@@ -8,7 +8,6 @@ import com.newsapp.utils.Converters
 
 @Database(entities = [News::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class )
-
 abstract class AppDatabase : RoomDatabase() {
     abstract fun newsDao() : NewsDao
 }

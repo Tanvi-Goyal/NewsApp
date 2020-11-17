@@ -27,7 +27,7 @@ class HeadlinesViewModel @ViewModelInject constructor(
         return newsError
     }
 
-    fun getHeadlines() {
+    fun getHeadlines(category: String) {
         disposableObserver = object : DisposableObserver<List<News>>() {
             override fun onComplete() {
             }
@@ -41,7 +41,7 @@ class HeadlinesViewModel @ViewModelInject constructor(
             }
         }
 
-        repository.getHeadlines()
+        repository.getHeadlines(category)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .debounce(400, TimeUnit.MILLISECONDS)

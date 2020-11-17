@@ -22,6 +22,10 @@ class HeadLinesFragment : Fragment() {
     private lateinit var binding: FragmentHeadLinesBinding
     private val viewModel: HeadlinesViewModel by viewModels()
     private lateinit var adapter: HeadlinesAdapter
+    private lateinit var tagsAdapter: TagsAdapter
+    private val tagList = arrayListOf<String>(
+        "technology", "sports", "science", "health", "general", "entertainment", "business"
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,13 +38,28 @@ class HeadLinesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getHeadlines()
+        viewModel.getHeadlines("technology")
+        setUpTagsRecycler()
         setupRecyclerView()
         setViewModelObservers()
 
         binding.btnFav.setOnClickListener {
             NavHostFragment.findNavController(this).navigate(R.id.navigate_to_favorities)
         }
+    }
+
+    private fun setUpTagsRecycler() {
+        binding.recyclerTags.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        tagsAdapter = TagsAdapter()
+        tagsAdapter.setData(tagList)
+
+        tagsAdapter.onItemClick = { category ->
+            viewModel.getHeadlines(category)
+            setViewModelObservers()
+        }
+
+        binding.recyclerTags.adapter = tagsAdapter
     }
 
     private fun setupRecyclerView() {
