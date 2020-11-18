@@ -3,6 +3,7 @@ package com.newsapp.data.repositories
 import com.newsapp.data.entities.News
 import com.newsapp.data.local.NewsDao
 import com.newsapp.data.remote.NewsAPI
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -51,7 +52,9 @@ class NewsRepository @Inject constructor(
             .subscribeOn(Schedulers.io())
     }
 
-    fun addToFavorites(id: Int, isFavorite: Int) = newsDao.addToFavorites(id, isFavorite)
+    fun addToFavorites(id: Int, isFavorite: Int) : Completable {
+        return Completable.fromCallable { newsDao.addToFavorites(id, isFavorite) }
+    }
 
     fun getFavoriteNews(category: String): Observable<List<News>> {
         return newsDao.getFavoriteNews(category)

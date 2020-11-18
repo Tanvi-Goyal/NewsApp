@@ -9,6 +9,7 @@ import com.newsapp.data.repositories.NewsRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class HeadlinesViewModel @ViewModelInject constructor(
@@ -53,6 +54,8 @@ class HeadlinesViewModel @ViewModelInject constructor(
     }
 
     fun addToFavorites(id: Int, isFavorite: Int) {
-        repository.addToFavorites(id, isFavorite)
+        repository.addToFavorites(id, isFavorite).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
     }
 }
