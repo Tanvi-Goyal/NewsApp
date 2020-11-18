@@ -5,4 +5,5 @@
     <string name="headlines">Top Headlines</string>
     <string name="favorities">Favorities</string>
     <string name="no_result">No Results Found</string>
+    <string name="no_result_for_category">No News found for this Category.</string>
 </resources>

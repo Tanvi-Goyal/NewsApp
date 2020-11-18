@@ -1,10 +1,10 @@
 package com.newsapp.data.repositories
 
-import android.util.Log
 import com.newsapp.data.entities.News
 import com.newsapp.data.local.NewsDao
 import com.newsapp.data.remote.NewsAPI
 import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class NewsRepository @Inject constructor(
@@ -13,23 +13,47 @@ class NewsRepository @Inject constructor(
 ) {
 
     fun getHeadlines(category: String): Observable<List<News>> {
+        val observableFromDb = getHeadLinesFromDB(category)
         val observableFromApi = getHeadLinesFromAPI(category)
-        val observableFromDb = getHeadLinesFromDB()
-        return Observable.concatArrayEager(observableFromApi, observableFromDb)
+        return Observable.concatArrayEager(observableFromDb, observableFromApi)
     }
 
     private fun getHeadLinesFromAPI(category: String): Observable<List<News>> {
         return newsAPI.getHeadlines(category)
             .flatMap { response -> Observable.fromArray(response.articles!!) }
+            .subscribeOn(Schedulers.io())
             .doOnNext { newsList ->
-                newsDao.insertAllHeadlines(newsList)
+                // for adding category explicitly in the db
+                val list = ArrayList<News>()
+                for (news in newsList) {
+                    val obj = News(
+                        news.id,
+                        news.source,
+                        news.author,
+                        news.title,
+                        news.description,
+                        news.url,
+                        news.urlToImage,
+                        news.publishedAt,
+                        news.content,
+                        news.isFavorite,
+                        category
+                    )
+                    list.add(obj)
+                }
+
+                newsDao.insertAllHeadlines(list)
             }
     }
 
-    private fun getHeadLinesFromDB(): Observable<List<News>> {
-        return newsDao.getAllHeadlines()
-            .doOnNext {
-                Log.e("REPOSITORY DB *** ", it.size.toString())
-            }
+    private fun getHeadLinesFromDB(category: String): Observable<List<News>> {
+        return newsDao.getAllHeadlines(category)
+            .subscribeOn(Schedulers.io())
+    }
+
+    fun addToFavorites(id: Int, isFavorite: Int) = newsDao.addToFavorites(id, isFavorite)
+
+    fun getFavoriteNews(category: String): Observable<List<News>> {
+        return newsDao.getFavoriteNews(category)
     }
 }

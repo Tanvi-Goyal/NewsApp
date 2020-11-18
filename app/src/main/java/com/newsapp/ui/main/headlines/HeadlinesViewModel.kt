@@ -42,7 +42,7 @@ class HeadlinesViewModel @ViewModelInject constructor(
         }
 
         repository.getHeadlines(category)
-            .subscribeOn(Schedulers.newThread())
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .debounce(400, TimeUnit.MILLISECONDS)
             .subscribe(disposableObserver)
@@ -50,5 +50,9 @@ class HeadlinesViewModel @ViewModelInject constructor(
 
     fun disposeElements() {
         if (null != disposableObserver && !disposableObserver.isDisposed) disposableObserver.dispose()
+    }
+
+    fun addToFavorites(id: Int, isFavorite: Int) {
+        repository.addToFavorites(id, isFavorite)
     }
 }

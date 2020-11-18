@@ -1,6 +1,5 @@
 package com.newsapp.data.local
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -17,6 +16,12 @@ interface NewsDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAllHeadlines(news: List<News>)
 
-    @Query("SELECT * FROM news order by publishedAt desc")
-    fun getAllHeadlines(): Observable<List<News>>
+    @Query("SELECT * FROM news WHERE category = :category order by publishedAt desc")
+    fun getAllHeadlines(category: String): Observable<List<News>>
+
+    @Query("UPDATE news SET isFavorite = :isFavorite WHERE id = :id")
+    fun addToFavorites(id: Int, isFavorite: Int): Int
+
+    @Query("SELECT * FROM news WHERE isFavorite = '1' AND category = :category")
+    fun getFavoriteNews(category: String) : Observable<List<News>>
 }

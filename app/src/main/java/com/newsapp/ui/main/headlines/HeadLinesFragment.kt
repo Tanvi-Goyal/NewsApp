@@ -55,6 +55,7 @@ class HeadLinesFragment : Fragment() {
         tagsAdapter.setData(tagList)
 
         tagsAdapter.onItemClick = { category ->
+            adapter.clearData()
             viewModel.getHeadlines(category)
             setViewModelObservers()
         }
@@ -71,6 +72,12 @@ class HeadLinesFragment : Fragment() {
             directions?.let { findNavController().navigate(it) }
         }
 
+        adapter.onFavClick = { news, isFav ->
+            if (isFav) {
+                viewModel.addToFavorites(news.id!!, 1)
+            } else viewModel.addToFavorites(news.id!!, 0)
+        }
+
         binding.swipeRefreshLayout.setOnRefreshListener { setViewModelObservers() }
         binding.recyclerViewHeadlines.adapter = adapter
     }
@@ -79,11 +86,15 @@ class HeadLinesFragment : Fragment() {
 
         binding.swipeRefreshLayout.isRefreshing = false
         binding.progressbar.visibility = View.VISIBLE
+        binding.tvNoResult.visibility = View.GONE
 
         viewModel.getNewsResult().observe(viewLifecycleOwner, Observer { newsList ->
-            Log.wtf("NEWS", newsList[0].content)
             if (!newsList.isNullOrEmpty()) {
+                binding.tvNoResult.visibility = View.GONE
+                binding.progressbar.visibility = View.GONE
                 adapter.setData(newsList as ArrayList<News>)
+            } else {
+                binding.tvNoResult.visibility = View.VISIBLE
                 binding.progressbar.visibility = View.GONE
             }
 

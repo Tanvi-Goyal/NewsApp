@@ -10,13 +10,15 @@ data class News(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
     val source: Source,
+    val author: String?,
     val title: String,
     val description: String?,
     val url: String?,
     val urlToImage: String?,
     val publishedAt: String?,
     val content: String?,
-    var isBookmarked: Boolean = false
+    var isFavorite: Boolean = false,
+    var category : String = ""
 )
 
 data class Source(

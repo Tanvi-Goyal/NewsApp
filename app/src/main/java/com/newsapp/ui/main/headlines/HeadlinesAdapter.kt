@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.newsapp.data.entities.News
 import com.newsapp.databinding.ItemHeadlineBinding
+import kotlinx.android.synthetic.main.item_headline.view.*
 
 class HeadlinesAdapter : RecyclerView.Adapter<HeadlinesAdapter.ViewHolder>() {
 
     var onItemClick: ((News) -> Unit)? = null
+    var onFavClick: ((News, Boolean) -> Unit)? = null
     var adapterList: ArrayList<News> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -20,8 +22,10 @@ class HeadlinesAdapter : RecyclerView.Adapter<HeadlinesAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = adapterList.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        holder.bind(adapterList[position])
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val currentNews = adapterList[position]
+        holder.bind(currentNews)
+    }
 
     fun setData(data: ArrayList<News>) {
         adapterList = data
@@ -35,21 +39,24 @@ class HeadlinesAdapter : RecyclerView.Adapter<HeadlinesAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemHeadlineBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: News) {
+        fun bind(news: News) {
             with(binding) {
-                binding.news = item
+                binding.news = news
                 binding.executePendingBindings()
 
-                Glide.with(binding.root)
-                    .load(item.urlToImage)
-                    .into(binding.imageView)
+                Glide.with(binding.root).load(news.urlToImage).into(binding.imageView)
+                binding.iconFav.isChecked = news.isFavorite
+
+                itemView.iconFav.setOnClickListener {
+                    news.isFavorite = binding.iconFav.isChecked
+                    onFavClick?.invoke(adapterList[adapterPosition], news.isFavorite)
+                }
             }
         }
 
         init {
             itemView.setOnClickListener {
                 onItemClick?.invoke(adapterList[adapterPosition])
-
             }
         }
     }

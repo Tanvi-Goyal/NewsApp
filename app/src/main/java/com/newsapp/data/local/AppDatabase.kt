@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.newsapp.data.entities.News
 import com.newsapp.utils.Converters
 
-@Database(entities = [News::class], version = 1, exportSchema = false)
+@Database(entities = [News::class], version = 6, exportSchema = false)
 @TypeConverters(Converters::class )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun newsDao() : NewsDao
