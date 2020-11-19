@@ -47,6 +47,10 @@ class HeadLinesFragment : Fragment() {
         binding.btnFav.setOnClickListener {
             NavHostFragment.findNavController(this).navigate(R.id.navigate_to_favorities)
         }
+
+        binding.btnClearDB.setOnClickListener {
+            viewModel.deleteDB()
+        }
     }
 
     private fun setUpTagsRecycler() {

@@ -20,8 +20,11 @@ interface NewsDao {
     fun getAllHeadlines(category: String): Observable<List<News>>
 
     @Query("UPDATE news SET isFavorite = :isFavorite WHERE id = :id")
-    fun addToFavorites(id: Int, isFavorite: Int) : Int
+    fun addToFavorites(id: Int, isFavorite: Int): Int
 
     @Query("SELECT * FROM news WHERE isFavorite = '1' AND category = :category")
-    fun getFavoriteNews(category: String) : Observable<List<News>>
+    fun getFavoriteNews(category: String): Observable<List<News>>
+
+    @Query("DELETE FROM news")
+    fun deleteAll()
 }

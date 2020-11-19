@@ -1,9 +1,11 @@
 package com.newsapp.data.repositories
 
 import com.newsapp.data.entities.News
+import com.newsapp.data.local.AppDatabase
 import com.newsapp.data.local.NewsDao
 import com.newsapp.data.remote.NewsAPI
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -58,5 +60,9 @@ class NewsRepository @Inject constructor(
 
     fun getFavoriteNews(category: String): Observable<List<News>> {
         return newsDao.getFavoriteNews(category).subscribeOn(Schedulers.io())
+    }
+
+    fun deleteDB() : Maybe<Unit> {
+        return Maybe.fromAction<Unit> { newsDao.deleteAll() }.subscribeOn(Schedulers.io())
     }
 }

@@ -57,4 +57,8 @@ class HeadlinesViewModel @ViewModelInject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe()
     }
+
+    fun deleteDB() {
+        repository.deleteDB().observeOn(AndroidSchedulers.mainThread()).subscribe()
+    }
 }
