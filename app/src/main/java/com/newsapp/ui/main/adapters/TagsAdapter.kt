@@ -1,9 +1,8 @@
-package com.newsapp.ui.main.headlines
+package com.newsapp.ui.main.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.newsapp.databinding.ItemTagBinding
 
 class TagsAdapter : RecyclerView.Adapter<TagsAdapter.ViewHolder>() {

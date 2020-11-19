@@ -1,4 +1,4 @@
-package com.newsapp.ui.main.headlines
+package com.newsapp.ui.main.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -8,55 +8,50 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.newsapp.R
+import com.newsapp.MainActivity
 import com.newsapp.data.entities.News
-import com.newsapp.databinding.FragmentHeadLinesBinding
+import com.newsapp.databinding.FragmentFavoritiesBinding
+import com.newsapp.ui.main.adapters.NewsAdapter
+import com.newsapp.ui.main.adapters.TagsAdapter
+import com.newsapp.ui.main.viewmodel.FavoriteNewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HeadLinesFragment : Fragment() {
+class FavoritesFragment : Fragment() {
 
-    private lateinit var binding: FragmentHeadLinesBinding
-    private val viewModel: HeadlinesViewModel by viewModels()
-    private lateinit var adapter: HeadlinesAdapter
+    private lateinit var binding: FragmentFavoritiesBinding
+    private val viewModel: FavoriteNewsViewModel by viewModels()
+    private lateinit var adapter: NewsAdapter
     private lateinit var tagsAdapter: TagsAdapter
-    private val tagList = arrayListOf<String>(
-        "technology", "sports", "science", "health", "general", "entertainment", "business"
-    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHeadLinesBinding.inflate(inflater, container, false)
+        binding = FragmentFavoritiesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getHeadlines("technology")
+        viewModel.getFavoriteNews("technology")
         setUpTagsRecycler()
         setupRecyclerView()
         setViewModelObservers()
-
-        binding.btnFav.setOnClickListener {
-            NavHostFragment.findNavController(this).navigate(R.id.navigate_to_favorities)
-        }
     }
 
     private fun setUpTagsRecycler() {
         binding.recyclerTags.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         tagsAdapter = TagsAdapter()
-        tagsAdapter.setData(tagList)
+        tagsAdapter.setData((activity as MainActivity).getTagList())
 
         tagsAdapter.onItemClick = { category ->
             adapter.clearData()
-            viewModel.getHeadlines(category)
+            viewModel.getFavoriteNews(category)
             setViewModelObservers()
         }
 
@@ -64,8 +59,8 @@ class HeadLinesFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        binding.recyclerViewHeadlines.layoutManager = LinearLayoutManager(context)
-        adapter = HeadlinesAdapter()
+        binding.recyclerViewFavorite.layoutManager = LinearLayoutManager(context)
+        adapter = NewsAdapter()
 
         adapter.onItemClick = { news ->
             val directions = news.url?.let { HeadLinesFragmentDirections.navigateToNewsDetail(it) }
@@ -78,13 +73,11 @@ class HeadLinesFragment : Fragment() {
             } else viewModel.addToFavorites(news.id!!, 0)
         }
 
-        binding.swipeRefreshLayout.setOnRefreshListener { setViewModelObservers() }
-        binding.recyclerViewHeadlines.adapter = adapter
+        binding.recyclerViewFavorite.adapter = adapter
     }
 
     private fun setViewModelObservers() {
 
-        binding.swipeRefreshLayout.isRefreshing = false
         binding.progressbar.visibility = View.VISIBLE
         binding.tvNoResult.visibility = View.GONE
 
@@ -98,12 +91,10 @@ class HeadLinesFragment : Fragment() {
                 binding.progressbar.visibility = View.GONE
             }
 
-            binding.swipeRefreshLayout.isRefreshing = false
         })
 
         viewModel.getNewsError().observe(viewLifecycleOwner, Observer<String> {
             Log.wtf("NEWS", it)
-            binding.swipeRefreshLayout.isRefreshing = false
             binding.progressbar.visibility = View.GONE
         })
     }

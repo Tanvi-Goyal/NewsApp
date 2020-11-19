@@ -52,11 +52,11 @@ class NewsRepository @Inject constructor(
             .subscribeOn(Schedulers.io())
     }
 
-    fun addToFavorites(id: Int, isFavorite: Int) : Completable {
+    fun addToFavorites(id: Int, isFavorite: Int): Completable {
         return Completable.fromCallable { newsDao.addToFavorites(id, isFavorite) }
     }
 
     fun getFavoriteNews(category: String): Observable<List<News>> {
-        return newsDao.getFavoriteNews(category)
+        return newsDao.getFavoriteNews(category).subscribeOn(Schedulers.io())
     }
 }

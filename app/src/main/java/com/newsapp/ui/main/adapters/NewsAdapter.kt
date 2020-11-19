@@ -1,4 +1,4 @@
-package com.newsapp.ui.main.headlines
+package com.newsapp.ui.main.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,7 @@ import com.newsapp.data.entities.News
 import com.newsapp.databinding.ItemHeadlineBinding
 import kotlinx.android.synthetic.main.item_headline.view.*
 
-class HeadlinesAdapter : RecyclerView.Adapter<HeadlinesAdapter.ViewHolder>() {
+class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
     var onItemClick: ((News) -> Unit)? = null
     var onFavClick: ((News, Boolean) -> Unit)? = null

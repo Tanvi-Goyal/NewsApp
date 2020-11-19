@@ -1,4 +1,4 @@
-package com.newsapp.ui.main.headlines
+package com.newsapp.ui.main.viewmodel
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class HeadlinesViewModel @ViewModelInject constructor(
+class FavoriteNewsViewModel @ViewModelInject constructor(
     private val repository: NewsRepository
 ) : ViewModel() {
 
@@ -28,7 +28,7 @@ class HeadlinesViewModel @ViewModelInject constructor(
         return newsError
     }
 
-    fun getHeadlines(category: String) {
+    fun getFavoriteNews(category: String) {
         disposableObserver = object : DisposableObserver<List<News>>() {
             override fun onComplete() {
             }
@@ -42,7 +42,7 @@ class HeadlinesViewModel @ViewModelInject constructor(
             }
         }
 
-        repository.getHeadlines(category)
+        repository.getFavoriteNews(category)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .debounce(400, TimeUnit.MILLISECONDS)
