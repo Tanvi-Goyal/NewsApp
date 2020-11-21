@@ -4,20 +4,20 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.rxjava2.RxRemoteMediator
-import com.newsapp.data.entities.News
 import com.newsapp.data.entities.NewsModel
 import com.newsapp.data.local.AppDatabase
 import com.newsapp.data.remote.NewsAPI
-import io.reactivex.Observable
+import com.newsapp.models.NewsMapper
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import java.io.InvalidObjectException
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
-class NewsRemoteMediator @Inject constructor(
+class NewsRemoteMediator (
     private val newsAPI: NewsAPI,
-    private val db : AppDatabase
+    private val db: AppDatabase,
+    private val mapper: NewsMapper
 ) : RxRemoteMediator<Int, NewsModel.News>() {
 
     override fun loadSingle(
@@ -55,21 +55,7 @@ class NewsRemoteMediator @Inject constructor(
                     newsAPI.getHeadlines(
                         category = "",
                         page = page
-                    )
-                        .flatMap { response -> Observable.fromArray(response.articles!!).map {
-                            NewsModel.News(
-                                it[0].id,
-                                currentNews.author,
-                                currentNews.title,
-                                currentNews.description,
-                                currentNews.url,
-                                currentNews.urlToImage,
-                                currentNews.publishedAt,
-                                currentNews.content,
-                                currentNews.isFavorite,
-                                currentNews.category
-                            )
-                        } }
+                    ).map { mapper.transform(it, isFavourite = false, category = "") }
                         .map { insertToDb(page, loadType, it) }
                         .map<MediatorResult> { MediatorResult.Success(endOfPaginationReached = it.endOfPage) }
                         .onErrorReturn { MediatorResult.Error(it) }

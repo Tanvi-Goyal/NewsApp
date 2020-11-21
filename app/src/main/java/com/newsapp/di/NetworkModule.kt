@@ -1,8 +1,6 @@
 package com.newsapp.di
 
-import com.newsapp.data.local.NewsDao
 import com.newsapp.data.remote.NewsAPI
-import com.newsapp.data.repositories.NewsRepository
 import com.newsapp.utils.ApiConstants
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -16,7 +14,6 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
-import javax.inject.Singleton
 
 
 @Module
@@ -39,7 +36,6 @@ object NetworkModule {
             val url = originalHttpUrl.newBuilder()
                 .addQueryParameter("apiKey", ApiConstants.API_KEY)
                 .addQueryParameter("country", ApiConstants.NEWS_COUNTRY)
-                .addQueryParameter("pageSize", ApiConstants.RESULTS_PER_PAGE)
                 .build()
             val requestBuilder = original.newBuilder().url(url).build()
             chain.proceed(requestBuilder)
@@ -68,10 +64,10 @@ object NetworkModule {
     @Provides
     fun providesNewsApi(retrofit: Retrofit): NewsAPI = retrofit.create(NewsAPI::class.java)
 
-    @Singleton
-    @Provides
-    fun providesNewsRepo(local: NewsDao, remote: NewsAPI): NewsRepository = NewsRepository(
-        local,
-        remote
-    )
+//    @Singleton
+//    @Provides
+//    fun providesNewsRepo(local: NewsDao, remote: NewsAPI): NewsRepository = NewsRepository(
+//        local,
+//        remote
+//    )
 }

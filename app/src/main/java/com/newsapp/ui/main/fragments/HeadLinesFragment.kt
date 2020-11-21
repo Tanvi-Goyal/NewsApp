@@ -1,31 +1,30 @@
 package com.newsapp.ui.main.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.newsapp.MainActivity
 import com.newsapp.R
-import com.newsapp.data.entities.News
 import com.newsapp.databinding.FragmentHeadLinesBinding
-import com.newsapp.ui.main.adapters.NewsAdapter
+import com.newsapp.ui.main.adapters.NewsRxAdapter
 import com.newsapp.ui.main.adapters.TagsAdapter
 import com.newsapp.ui.main.viewmodel.HeadlinesViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.disposables.CompositeDisposable
 
 @AndroidEntryPoint
 class HeadLinesFragment : Fragment() {
 
+    private val mDisposable = CompositeDisposable()
+
     private lateinit var binding: FragmentHeadLinesBinding
     private val viewModel: HeadlinesViewModel by viewModels()
-    private lateinit var adapter: NewsAdapter
+    private lateinit var adapter: NewsRxAdapter
     private lateinit var tagsAdapter: TagsAdapter
 
     override fun onCreateView(
@@ -39,7 +38,7 @@ class HeadLinesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getHeadlines("technology")
+        viewModel.getNews("technology")
         setUpTagsRecycler()
         setupRecyclerView()
         setViewModelObservers()
@@ -49,7 +48,7 @@ class HeadLinesFragment : Fragment() {
         }
 
         binding.btnClearDB.setOnClickListener {
-            viewModel.deleteDB()
+//            viewModel.deleteDB()
         }
     }
 
@@ -60,8 +59,8 @@ class HeadLinesFragment : Fragment() {
         tagsAdapter.setData((activity as MainActivity).getTagList())
 
         tagsAdapter.onItemClick = { category ->
-            adapter.clearData()
-            viewModel.getHeadlines(category)
+//            adapter.clearData()
+            viewModel.getNews(category)
             setViewModelObservers()
         }
 
@@ -70,50 +69,59 @@ class HeadLinesFragment : Fragment() {
 
     private fun setupRecyclerView() {
         binding.recyclerViewHeadlines.layoutManager = LinearLayoutManager(context)
-        adapter = NewsAdapter()
+        adapter = NewsRxAdapter()
 
-        adapter.onItemClick = { news ->
-            val directions = news.url?.let {
-                HeadLinesFragmentDirections.navigateToNewsDetail(
-                    it
-                )
-            }
-            directions?.let { findNavController().navigate(it) }
-        }
+//        adapter.onItemClick = { news ->
+//            val directions = news.url?.let {
+//                HeadLinesFragmentDirections.navigateToNewsDetail(
+//                    it
+//                )
+//            }
+//            directions?.let { findNavController().navigate(it) }
+//        }
 
-        adapter.onFavClick = { news, isFav ->
-            if (isFav) {
-                viewModel.addToFavorites(news.id!!, 1)
-            } else viewModel.addToFavorites(news.id!!, 0)
-        }
+//        adapter.onFavClick = { news, isFav ->
+//            if (isFav) {
+//                viewModel.addToFavorites(news.id!!, 1)
+//            } else viewModel.addToFavorites(news.id!!, 0)
+//        }
 
         binding.swipeRefreshLayout.setOnRefreshListener { setViewModelObservers() }
         binding.recyclerViewHeadlines.adapter = adapter
+
+        mDisposable.add(viewModel.getNews("technology").subscribe {
+            adapter.submitData(lifecycle, it)
+        })
+    }
+
+    override fun onDestroyView() {
+        mDisposable.dispose()
+        super.onDestroyView()
     }
 
     private fun setViewModelObservers() {
 
         binding.swipeRefreshLayout.isRefreshing = false
-        binding.progressbar.visibility = View.VISIBLE
+        binding.progressbar.visibility = View.GONE
         binding.tvNoResult.visibility = View.GONE
 
-        viewModel.getNewsResult().observe(viewLifecycleOwner, Observer { newsList ->
-            if (!newsList.isNullOrEmpty()) {
-                binding.tvNoResult.visibility = View.GONE
-                binding.progressbar.visibility = View.GONE
-                adapter.setData(newsList as ArrayList<News>)
-            } else {
-                binding.tvNoResult.visibility = View.VISIBLE
-                binding.progressbar.visibility = View.GONE
-            }
-
-            binding.swipeRefreshLayout.isRefreshing = false
-        })
-
-        viewModel.getNewsError().observe(viewLifecycleOwner, Observer<String> {
-            Log.wtf("NEWS", it)
-            binding.swipeRefreshLayout.isRefreshing = false
-            binding.progressbar.visibility = View.GONE
-        })
+//        viewModel.getNewsResult().observe(viewLifecycleOwner, Observer { newsList ->
+//            if (!newsList.isNullOrEmpty()) {
+//                binding.tvNoResult.visibility = View.GONE
+//                binding.progressbar.visibility = View.GONE
+//                adapter.setData(newsList as ArrayList<News>)
+//            } else {
+//                binding.tvNoResult.visibility = View.VISIBLE
+//                binding.progressbar.visibility = View.GONE
+//            }
+//
+//            binding.swipeRefreshLayout.isRefreshing = false
+//        })
+//
+//        viewModel.getNewsError().observe(viewLifecycleOwner, Observer<String> {
+//            Log.wtf("NEWS", it)
+//            binding.swipeRefreshLayout.isRefreshing = false
+//            binding.progressbar.visibility = View.GONE
+//        })
     }
 }

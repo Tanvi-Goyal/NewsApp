@@ -8,7 +8,7 @@ import com.newsapp.utils.Converters
 
 @Database(
     entities = [NewsModel.News::class, NewsModel.NewsRemoteKeys::class],
-    version = 6,
+    version = 7,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
