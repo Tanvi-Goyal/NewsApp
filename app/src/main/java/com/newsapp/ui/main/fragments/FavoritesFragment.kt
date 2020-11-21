@@ -87,7 +87,7 @@ class FavoritesFragment : Fragment() {
                 binding.progressbar.visibility = View.GONE
                 adapter.setData(newsList as ArrayList<News>)
             } else {
-                binding.tvNoResult.visibility = View.VISIBLE
+                binding.tvNoResult.visibility = View.GONE
                 binding.progressbar.visibility = View.GONE
             }
 

@@ -28,6 +28,7 @@ class HeadLinesFragment : Fragment() {
     private val viewModel: HeadlinesViewModel by viewModels()
     private lateinit var adapter: NewsAdapter
     private lateinit var tagsAdapter: TagsAdapter
+    private var selectedCategory : String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +44,7 @@ class HeadLinesFragment : Fragment() {
         viewModel.getHeadlines("technology")
         setUpTagsRecycler()
         setupRecyclerView()
+        setSwipeRefreshListeners()
         setViewModelObservers()
 
         binding.btnFav.setOnClickListener {
@@ -63,6 +65,7 @@ class HeadLinesFragment : Fragment() {
         tagsAdapter.setData((activity as MainActivity).getTagList())
 
         tagsAdapter.onItemClick = { category ->
+            selectedCategory = category
             viewModel.getHeadlines(category)
             binding.tvNoResult.visibility = View.GONE
             adapter.clearData()
@@ -92,8 +95,17 @@ class HeadLinesFragment : Fragment() {
             } else viewModel.addToFavorites(news.id!!, 0)
         }
 
-        binding.swipeRefreshLayout.setOnRefreshListener { setViewModelObservers() }
         binding.recyclerViewHeadlines.adapter = adapter
+    }
+
+    private fun setSwipeRefreshListeners() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.getHeadlines(selectedCategory)
+            binding.tvNoResult.visibility = View.GONE
+            adapter.clearData()
+
+            setViewModelObservers()
+        }
     }
 
     private fun setViewModelObservers() {
@@ -109,7 +121,7 @@ class HeadLinesFragment : Fragment() {
                 adapter.setData(newsList as ArrayList<News>)
             } else {
                 binding.recyclerViewHeadlines.visibility = View.GONE
-                binding.tvNoResult.visibility = View.VISIBLE
+                binding.tvNoResult.visibility = View.GONE
                 binding.progressbar.visibility = View.GONE
             }
 
