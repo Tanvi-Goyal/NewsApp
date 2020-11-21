@@ -12,9 +12,9 @@ import javax.inject.Inject
 class GetNewsRepositoryImpl @Inject constructor(
     private val database: AppDatabase,
     private val remoteMediator: NewsRemoteMediator
-) : GetNewsRepository {
+) {
 
-    override fun getNews(category: String): Flowable<PagingData<NewsModel.News>> {
+     fun getNews(category: String): Flowable<PagingData<NewsModel.News>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 20,

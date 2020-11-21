@@ -1,6 +1,10 @@
 package com.newsapp.di
 
+import com.newsapp.data.local.AppDatabase
 import com.newsapp.data.remote.NewsAPI
+import com.newsapp.data.repositories.GetNewsRepositoryImpl
+import com.newsapp.data.repositories.NewsRemoteMediator
+import com.newsapp.models.NewsMapper
 import com.newsapp.utils.ApiConstants
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -14,6 +18,7 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Singleton
 
 
 @Module
@@ -63,6 +68,25 @@ object NetworkModule {
 
     @Provides
     fun providesNewsApi(retrofit: Retrofit): NewsAPI = retrofit.create(NewsAPI::class.java)
+
+    @Provides
+    fun providesNewsMapper() = NewsMapper()
+
+    @Singleton
+    @Provides
+    fun providesNewsMediator(
+        newsAPI: NewsAPI,
+        db: AppDatabase,
+        mapper: NewsMapper
+    ): NewsRemoteMediator =
+        NewsRemoteMediator(newsAPI, db, mapper)
+
+    @Singleton
+    @Provides
+    fun providesNewsRepo(
+        db: AppDatabase,
+        remoteMediator: NewsRemoteMediator
+    ): GetNewsRepositoryImpl = GetNewsRepositoryImpl(db, remoteMediator)
 
 //    @Singleton
 //    @Provides

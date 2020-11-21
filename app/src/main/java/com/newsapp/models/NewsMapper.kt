@@ -1,8 +1,9 @@
 package com.newsapp.models
 
 import com.newsapp.data.entities.NewsModel
+import javax.inject.Inject
 
-class NewsMapper {
+class NewsMapper @Inject constructor(){
     fun transform(
         response: NewsResponse,
         isFavourite: Boolean = false,

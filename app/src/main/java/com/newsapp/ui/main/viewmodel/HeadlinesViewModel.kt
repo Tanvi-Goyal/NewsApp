@@ -7,10 +7,11 @@ import androidx.paging.PagingData
 import androidx.paging.rxjava2.cachedIn
 import com.newsapp.data.entities.NewsModel
 import com.newsapp.data.repositories.GetNewsRepository
+import com.newsapp.data.repositories.GetNewsRepositoryImpl
 import io.reactivex.Flowable
 
 class HeadlinesViewModel @ViewModelInject constructor(
-    private val repository: GetNewsRepository
+    private val repository: GetNewsRepositoryImpl
 ) : ViewModel() {
 
 //    var newsResult: MutableLiveData<List<News>> = MutableLiveData()

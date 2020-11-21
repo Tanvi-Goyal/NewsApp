@@ -44,22 +44,6 @@ object AppModule {
     @Provides
     fun providesNewsRemoteKeysDao(db: AppDatabase): NewsRemoteKeysDao = db.newsRemoteKeysDao()
 
-    @Provides
-    fun providesNewsMapper() = NewsMapper()
 
-    @Singleton
-    @Provides
-    fun providesNewsMediator(
-        newsAPI: NewsAPI,
-        db: AppDatabase,
-        mapper: NewsMapper
-    ): NewsRemoteMediator =
-        NewsRemoteMediator(newsAPI, db, mapper)
-
-    @Provides
-    fun providesNewsRepo(
-        db: AppDatabase,
-        remoteMediator: NewsRemoteMediator
-    ): GetNewsRepositoryImpl = GetNewsRepositoryImpl(db, remoteMediator)
 
 }

@@ -5,5 +5,5 @@ import com.newsapp.data.entities.NewsModel
 import io.reactivex.Flowable
 
 interface GetNewsRepository {
-    fun getNews(category : String): Flowable<PagingData<NewsModel.News>>
+    fun getNews(category: String): Flowable<PagingData<NewsModel.News>>
 }
