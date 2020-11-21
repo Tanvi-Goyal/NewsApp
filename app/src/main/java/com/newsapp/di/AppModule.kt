@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.newsapp.data.local.AppDatabase
 import com.newsapp.data.local.NewsDao
+import com.newsapp.data.local.NewsRemoteKeysDao
 import com.newsapp.utils.AppConstants
 import dagger.Module
 import dagger.Provides
@@ -33,4 +34,8 @@ object AppModule {
     @Singleton
     @Provides
     fun providesNewsDao(db: AppDatabase): NewsDao = db.newsDao()
+
+    @Singleton
+    @Provides
+    fun providesNewsRemoteKeysDao(db: AppDatabase): NewsRemoteKeysDao = db.newsRemoteKeysDao()
 }

@@ -1,9 +1,19 @@
 package com.newsapp.models
 
-import com.newsapp.data.entities.News
-
 data class NewsResponse(
     val status: String,
     val totalResults: Int,
-    val articles: List<News>?
-)
+    val articles: List<News>?,
+    val page: Int = 0
+) {
+    data class News(
+        val id: Int? = null,
+        val author: String?,
+        val title: String,
+        val description: String?,
+        val url: String?,
+        val urlToImage: String?,
+        val publishedAt: String?,
+        val content: String?
+    )
+}
