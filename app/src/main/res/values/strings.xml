@@ -4,4 +4,5 @@
     <string name="favorities">Favorite News</string>
     <string name="no_result">No Results Found</string>
     <string name="no_result_for_category">No News found for this Category.</string>
+    <string name="error_no_news">No News found for this Category</string>
 </resources>

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -50,6 +51,8 @@ class HeadLinesFragment : Fragment() {
 
         binding.btnClearDB.setOnClickListener {
             viewModel.deleteDB()
+            Toast.makeText(view.context, getString(R.string.error_no_news), Toast.LENGTH_SHORT).show()
+            setViewModelObservers()
         }
     }
 
@@ -102,8 +105,10 @@ class HeadLinesFragment : Fragment() {
             if (!newsList.isNullOrEmpty()) {
                 binding.tvNoResult.visibility = View.GONE
                 binding.progressbar.visibility = View.GONE
+                binding.recyclerViewHeadlines.visibility = View.VISIBLE
                 adapter.setData(newsList as ArrayList<News>)
             } else {
+                binding.recyclerViewHeadlines.visibility = View.GONE
                 binding.tvNoResult.visibility = View.VISIBLE
                 binding.progressbar.visibility = View.GONE
             }
