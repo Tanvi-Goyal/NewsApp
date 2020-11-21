@@ -1,5 +1,6 @@
 package com.newsapp.data.local
 
+import androidx.paging.PageKeyedDataSource
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert

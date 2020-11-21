@@ -14,7 +14,7 @@ import java.io.InvalidObjectException
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
-class NewsRemoteMediator (
+class NewsRemoteMediator @Inject constructor(
     private val newsAPI: NewsAPI,
     private val db: AppDatabase,
     private val mapper: NewsMapper

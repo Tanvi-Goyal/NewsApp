@@ -7,8 +7,9 @@ import androidx.paging.rxjava2.flowable
 import com.newsapp.data.entities.NewsModel
 import com.newsapp.data.local.AppDatabase
 import io.reactivex.Flowable
+import javax.inject.Inject
 
-class GetNewsRepositoryImpl(
+class GetNewsRepositoryImpl @Inject constructor(
     private val database: AppDatabase,
     private val remoteMediator: NewsRemoteMediator
 ) : GetNewsRepository {
