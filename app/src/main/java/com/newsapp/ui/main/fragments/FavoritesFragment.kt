@@ -50,6 +50,7 @@ class FavoritesFragment : Fragment() {
         tagsAdapter.setData((activity as MainActivity).getTagList())
 
         tagsAdapter.onItemClick = { category ->
+            binding.tvNoResult.visibility = View.GONE
             adapter.clearData()
             viewModel.getFavoriteNews(category)
             setViewModelObservers()
@@ -79,7 +80,6 @@ class FavoritesFragment : Fragment() {
     private fun setViewModelObservers() {
 
         binding.progressbar.visibility = View.VISIBLE
-        binding.tvNoResult.visibility = View.GONE
 
         viewModel.getNewsResult().observe(viewLifecycleOwner, Observer { newsList ->
             if (!newsList.isNullOrEmpty()) {
@@ -97,5 +97,10 @@ class FavoritesFragment : Fragment() {
             Log.wtf("NEWS", it)
             binding.progressbar.visibility = View.GONE
         })
+    }
+
+    override fun onDestroyView() {
+        viewModel.disposeElements()
+        super.onDestroyView()
     }
 }

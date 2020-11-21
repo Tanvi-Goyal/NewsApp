@@ -20,6 +20,7 @@
         app:cardElevation="@dimen/_4sdp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/black"
@@ -32,7 +33,7 @@
                 android:id="@+id/tvTag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{tag}"
+                android:text="@{tag.substring(0,1).toUpperCase() + tag.substring(1)}"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_11sdp"
                 android:textStyle="bold"

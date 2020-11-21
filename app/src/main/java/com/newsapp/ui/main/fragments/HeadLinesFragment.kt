@@ -60,8 +60,10 @@ class HeadLinesFragment : Fragment() {
         tagsAdapter.setData((activity as MainActivity).getTagList())
 
         tagsAdapter.onItemClick = { category ->
-            adapter.clearData()
             viewModel.getHeadlines(category)
+            binding.tvNoResult.visibility = View.GONE
+            adapter.clearData()
+
             setViewModelObservers()
         }
 
@@ -95,7 +97,6 @@ class HeadLinesFragment : Fragment() {
 
         binding.swipeRefreshLayout.isRefreshing = false
         binding.progressbar.visibility = View.VISIBLE
-        binding.tvNoResult.visibility = View.GONE
 
         viewModel.getNewsResult().observe(viewLifecycleOwner, Observer { newsList ->
             if (!newsList.isNullOrEmpty()) {
@@ -115,5 +116,10 @@ class HeadLinesFragment : Fragment() {
             binding.swipeRefreshLayout.isRefreshing = false
             binding.progressbar.visibility = View.GONE
         })
+    }
+
+    override fun onDestroyView() {
+        viewModel.disposeElements()
+        super.onDestroyView()
     }
 }

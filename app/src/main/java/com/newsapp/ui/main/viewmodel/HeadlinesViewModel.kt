@@ -44,7 +44,7 @@ class HeadlinesViewModel @ViewModelInject constructor(
         repository.getHeadlines(category)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .debounce(400, TimeUnit.MILLISECONDS)
+            .debounce(100, TimeUnit.MILLISECONDS)
             .subscribe(disposableObserver)
     }
 

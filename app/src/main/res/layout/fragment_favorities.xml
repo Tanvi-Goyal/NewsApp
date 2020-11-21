@@ -51,37 +51,26 @@
             app:layout_constraintTop_toBottomOf="@id/toolbarFavorite"
             tools:listitem="@layout/item_tag" />
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/noResultLottie"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_200sdp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/no_result" />
-
         <TextView
             android:id="@+id/tvNoResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
             android:text="@string/no_result"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="@dimen/_12sdp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@+id/noResultLottie"
-            app:layout_constraintStart_toStartOf="@id/noResultLottie"
-            app:layout_constraintTop_toBottomOf="@+id/noResultLottie" />
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recyclerTags"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewFavorite"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginBottom="@dimen/_4sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

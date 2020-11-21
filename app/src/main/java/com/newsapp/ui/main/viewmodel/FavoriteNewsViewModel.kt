@@ -9,7 +9,6 @@ import com.newsapp.data.repositories.NewsRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 class FavoriteNewsViewModel @ViewModelInject constructor(
