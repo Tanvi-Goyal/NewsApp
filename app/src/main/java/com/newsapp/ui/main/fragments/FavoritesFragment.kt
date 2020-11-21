@@ -64,7 +64,7 @@ class FavoritesFragment : Fragment() {
         adapter = NewsAdapter()
 
         adapter.onItemClick = { news ->
-            val directions = news.url?.let { HeadLinesFragmentDirections.navigateToNewsDetail(it) }
+            val directions = news.url?.let { FavoritesFragmentDirections.navigateToNewsDetail(it) }
             directions?.let { findNavController().navigate(it) }
         }
 
