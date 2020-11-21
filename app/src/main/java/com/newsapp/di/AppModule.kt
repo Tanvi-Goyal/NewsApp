@@ -1,15 +1,10 @@
 package com.newsapp.di
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.newsapp.data.local.AppDatabase
 import com.newsapp.data.local.NewsDao
 import com.newsapp.data.local.NewsRemoteKeysDao
-import com.newsapp.data.remote.NewsAPI
-import com.newsapp.data.repositories.GetNewsRepositoryImpl
-import com.newsapp.data.repositories.NewsRemoteMediator
-import com.newsapp.models.NewsMapper
 import com.newsapp.utils.AppConstants
 import dagger.Module
 import dagger.Provides

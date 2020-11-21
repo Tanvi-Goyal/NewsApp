@@ -11,7 +11,6 @@ import com.newsapp.models.NewsMapper
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import java.io.InvalidObjectException
-import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
 class NewsRemoteMediator(
@@ -53,9 +52,9 @@ class NewsRemoteMediator(
                     Single.just(MediatorResult.Success(endOfPaginationReached = true))
                 } else {
                     newsAPI.getHeadlines(
-                        category = "",
+                        category = "technology",
                         page = page
-                    ).map { mapper.transform(it, isFavourite = false, category = "") }
+                    ).map { mapper.transform(it, isFavourite = false, category = "technology") }
                         .map { insertToDb(page, loadType, it) }
                         .map<MediatorResult> { MediatorResult.Success(endOfPaginationReached = it.endOfPage) }
                         .onErrorReturn { MediatorResult.Error(it) }
@@ -78,7 +77,7 @@ class NewsRemoteMediator(
             val prevKey = if (page == 1) null else page - 1
             val nextKey = if (data.endOfPage) null else page + 1
             val keys = data.news.map {
-                NewsModel.NewsRemoteKeys(newsId = it.id!!, prevKey = prevKey, nextKey = nextKey)
+                NewsModel.NewsRemoteKeys(newsId = it.id, prevKey = prevKey, nextKey = nextKey)
             }
             db.newsRemoteKeysDao().insertAll(keys)
             db.newsDao().insertAllHeadlines(data.news)

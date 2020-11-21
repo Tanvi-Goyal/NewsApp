@@ -8,10 +8,9 @@ import com.newsapp.utils.Converters
 
 @Database(
     entities = [NewsModel.News::class, NewsModel.NewsRemoteKeys::class],
-    version = 7,
+    version = 8,
     exportSchema = false
 )
-@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun newsDao(): NewsDao
     abstract fun newsRemoteKeysDao(): NewsRemoteKeysDao

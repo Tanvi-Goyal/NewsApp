@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        viewModel.disposeElements()
+//        viewModel.disposeElements()
         super.onDestroy()
     }
 }

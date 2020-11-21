@@ -21,7 +21,7 @@ data class NewsModel(
     @Entity(tableName = "news", indices = [Index(value = ["url"], unique = true)])
     data class News(
         @PrimaryKey(autoGenerate = true)
-        val id: Int? = null,
+        val id: Int = 0,
         val author: String?,
         val title: String,
         val description: String?,

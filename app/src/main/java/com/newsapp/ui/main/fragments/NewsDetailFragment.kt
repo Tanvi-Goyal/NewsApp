@@ -13,7 +13,7 @@ import com.newsapp.databinding.FragmentNewsDetailBinding
 class NewsDetailFragment : Fragment() {
 
     private lateinit var binding: FragmentNewsDetailBinding
-    private val args by navArgs<NewsDetailFragmentArgs>()
+//    private val args by navArgs<NewsDetailFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,15 +25,15 @@ class NewsDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val url = args.url
+//        val url = args.url
 
-        binding.webview.settings.javaScriptEnabled = true
-        binding.webview.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                view?.loadUrl(url!!)
-                return true
-            }
-        }
-        binding.webview.loadUrl(url)
+//        binding.webview.settings.javaScriptEnabled = true
+//        binding.webview.webViewClient = object : WebViewClient() {
+//            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+//                view?.loadUrl(url!!)
+//                return true
+//            }
+//        }
+//        binding.webview.loadUrl(url)
     }
 }

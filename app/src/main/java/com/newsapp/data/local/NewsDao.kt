@@ -25,7 +25,7 @@ interface NewsDao {
     fun addToFavorites(id: Int, isFavorite: Int): Int
 
     @Query("SELECT * FROM news WHERE isFavorite = '1' AND category = :category")
-    fun getFavoriteNews(category: String): Observable<List<NewsModel.News>>
+    fun getFavoriteNews(category: String): PagingSource<Int, NewsModel.News>
 
     @Query("DELETE FROM news")
     fun deleteAll()

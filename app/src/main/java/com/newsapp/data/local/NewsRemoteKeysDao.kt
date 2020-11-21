@@ -10,7 +10,7 @@ import com.newsapp.data.entities.NewsModel
 interface NewsRemoteKeysDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(remoteKey: List<NewsModel.NewsRemoteKeys>)
+    fun insertAll(remoteKey: List<NewsModel.NewsRemoteKeys?>)
 
     @Query("SELECT * FROM news_remote_keys WHERE newsId = :newsId")
     fun remoteKeysByNewsId(newsId: Int): NewsModel.NewsRemoteKeys?

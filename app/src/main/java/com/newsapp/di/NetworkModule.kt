@@ -2,7 +2,7 @@ package com.newsapp.di
 
 import com.newsapp.data.local.AppDatabase
 import com.newsapp.data.remote.NewsAPI
-import com.newsapp.data.repositories.GetNewsRepositoryImpl
+import com.newsapp.data.repositories.GetNewsRepository
 import com.newsapp.data.repositories.NewsRemoteMediator
 import com.newsapp.models.NewsMapper
 import com.newsapp.utils.ApiConstants
@@ -86,7 +86,7 @@ object NetworkModule {
     fun providesNewsRepo(
         db: AppDatabase,
         remoteMediator: NewsRemoteMediator
-    ): GetNewsRepositoryImpl = GetNewsRepositoryImpl(db, remoteMediator)
+    ): GetNewsRepository = GetNewsRepository(db, remoteMediator)
 
 //    @Singleton
 //    @Provides
