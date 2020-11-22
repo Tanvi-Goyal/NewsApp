@@ -1,6 +1,8 @@
 package com.newsapp.di
 
 import android.content.Context
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import androidx.room.Room
 import com.newsapp.data.local.AppDatabase
 import com.newsapp.data.local.NewsDao
@@ -33,4 +35,8 @@ object AppModule {
     @Singleton
     @Provides
     fun providesNewsDao(db: AppDatabase): NewsDao = db.newsDao()
+
+    @Singleton
+    @Provides
+    fun providesSharedPrefs(context: Context): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 }

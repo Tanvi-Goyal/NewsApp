@@ -1,5 +1,6 @@
 package com.newsapp.ui.main.fragments
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,6 +21,7 @@ import com.newsapp.ui.main.adapters.NewsAdapter
 import com.newsapp.ui.main.adapters.TagsAdapter
 import com.newsapp.ui.main.viewmodel.HeadlinesViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HeadLinesFragment : Fragment() {
@@ -28,20 +30,25 @@ class HeadLinesFragment : Fragment() {
     private val viewModel: HeadlinesViewModel by viewModels()
     private lateinit var adapter: NewsAdapter
     private lateinit var tagsAdapter: TagsAdapter
-    private var selectedCategory : String = ""
+
+    @Inject
+    lateinit var preferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHeadLinesBinding.inflate(inflater, container, false)
+        preferences.edit().putString("headline_category", "technology").apply()
+        preferences.edit().putInt("headline_position", 0).apply()
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getHeadlines("technology")
+        preferences.getString("headline_category", "")?.let { viewModel.getHeadlines(it) }
         setUpTagsRecycler()
         setupRecyclerView()
         setSwipeRefreshListeners()
@@ -65,12 +72,12 @@ class HeadLinesFragment : Fragment() {
         tagsAdapter.setData((activity as MainActivity).getTagList())
 
         tagsAdapter.onItemClick = { category ->
-            selectedCategory = category
             viewModel.getHeadlines(category)
+            setViewModelObservers()
+            preferences.edit().putString("headline_category", category).apply()
             binding.tvNoResult.visibility = View.GONE
             adapter.clearData()
 
-            setViewModelObservers()
         }
 
         binding.recyclerTags.adapter = tagsAdapter
@@ -100,10 +107,10 @@ class HeadLinesFragment : Fragment() {
 
     private fun setSwipeRefreshListeners() {
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.getHeadlines(selectedCategory)
+            preferences.getString("headline_category", "")?.let { viewModel.getHeadlines(it) }
             binding.tvNoResult.visibility = View.GONE
             adapter.clearData()
-
+//
             setViewModelObservers()
         }
     }
