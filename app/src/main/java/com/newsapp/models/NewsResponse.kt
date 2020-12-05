@@ -5,5 +5,6 @@ import com.newsapp.data.entities.News
 data class NewsResponse(
     val status: String,
     val totalResults: Int,
-    val articles: List<News>?
+    val articles: List<News> = emptyList(),
+    val nextPage: Int? = null
 )

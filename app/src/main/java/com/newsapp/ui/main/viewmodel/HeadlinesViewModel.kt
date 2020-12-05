@@ -1,64 +1,44 @@
 package com.newsapp.ui.main.viewmodel
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.newsapp.data.entities.News
 import com.newsapp.data.repositories.NewsRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.observers.DisposableObserver
-import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 class HeadlinesViewModel @ViewModelInject constructor(
     private val repository: NewsRepository
 ) : ViewModel() {
 
-    var newsResult: MutableLiveData<List<News>> = MutableLiveData()
-    var newsError: MutableLiveData<String> = MutableLiveData()
-    lateinit var disposableObserver: DisposableObserver<List<News>>
+    private var currentCategoryValue : String? = null
+    private var currentHeadlinesResult : Flow<PagingData<News>>? = null
 
-    fun getNewsResult(): LiveData<List<News>> {
-        return newsResult
-    }
-
-    fun getNewsError(): LiveData<String> {
-        return newsError
-    }
-
-    fun getHeadlines(category: String) {
-        disposableObserver = object : DisposableObserver<List<News>>() {
-            override fun onComplete() {
-            }
-
-            override fun onNext(news: List<News>) {
-                newsResult.postValue(news)
-            }
-
-            override fun onError(e: Throwable) {
-                newsError.postValue(e.message)
-            }
+    fun getHeadlines(category: String) : Flow<PagingData<News>> {
+        val lastResult = currentHeadlinesResult
+        if(category == currentCategoryValue && lastResult != null) {
+            return lastResult
         }
 
-        repository.getHeadlines(category)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .debounce(100, TimeUnit.MILLISECONDS)
-            .subscribe(disposableObserver)
-    }
-
-    fun disposeElements() {
-        if (null != disposableObserver && !disposableObserver.isDisposed) disposableObserver.dispose()
+        currentCategoryValue = category
+        val newResult = repository.getHeadlines(category).cachedIn(viewModelScope)
+        currentHeadlinesResult = newResult
+        return newResult
     }
 
     fun addToFavorites(id: Int, isFavorite: Int) {
-        repository.addToFavorites(id, isFavorite).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.addToFavorites(id, isFavorite)
+        }
     }
 
     fun deleteDB() {
-        repository.deleteDB().observeOn(AndroidSchedulers.mainThread()).subscribe()
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteDB()
+        }
     }
 }

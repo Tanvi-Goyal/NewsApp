@@ -22,6 +22,7 @@ buildscript {
     ext.rxjava = "2.2.20"
     ext.rxandroid = "2.1.1"
     ext.sdp = "1.0.6"
+    ext.paging_version = "3.0.0-alpha03"
 
     repositories {
         google()

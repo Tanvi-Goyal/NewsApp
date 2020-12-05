@@ -81,26 +81,26 @@ class FavoritesFragment : Fragment() {
 
         binding.progressbar.visibility = View.VISIBLE
 
-        viewModel.getNewsResult().observe(viewLifecycleOwner, Observer { newsList ->
-            if (!newsList.isNullOrEmpty()) {
-                binding.tvNoResult.visibility = View.GONE
-                binding.progressbar.visibility = View.GONE
-                adapter.setData(newsList as ArrayList<News>)
-            } else {
-                binding.tvNoResult.visibility = View.GONE
-                binding.progressbar.visibility = View.GONE
-            }
-
-        })
-
-        viewModel.getNewsError().observe(viewLifecycleOwner, Observer<String> {
-            Log.wtf("NEWS", it)
-            binding.progressbar.visibility = View.GONE
-        })
+//        viewModel.getNewsResult().observe(viewLifecycleOwner, Observer { newsList ->
+//            if (!newsList.isNullOrEmpty()) {
+//                binding.tvNoResult.visibility = View.GONE
+//                binding.progressbar.visibility = View.GONE
+//                adapter.setData(newsList as ArrayList<News>)
+//            } else {
+//                binding.tvNoResult.visibility = View.GONE
+//                binding.progressbar.visibility = View.GONE
+//            }
+//
+//        })
+//
+//        viewModel.getNewsError().observe(viewLifecycleOwner, Observer<String> {
+//            Log.wtf("NEWS", it)
+//            binding.progressbar.visibility = View.GONE
+//        })
     }
 
     override fun onDestroyView() {
-        viewModel.disposeElements()
+//        viewModel.disposeElements()
         super.onDestroyView()
     }
 }
