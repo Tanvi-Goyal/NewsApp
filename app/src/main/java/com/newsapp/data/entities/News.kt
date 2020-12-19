@@ -4,11 +4,10 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-// URL to check Unique news
 @Entity(tableName = "news", indices = [Index(value = ["url"], unique = true)])
 data class News(
     @PrimaryKey(autoGenerate = true)
-    val id: Int? = null,
+    val id: Int,
     val source: Source,
     val author: String?,
     val title: String,

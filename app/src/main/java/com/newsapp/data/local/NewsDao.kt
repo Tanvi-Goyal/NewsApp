@@ -29,5 +29,5 @@ interface NewsDao {
     fun getFavoriteNews(category: String): LiveData<List<News>>
 
     @Query("DELETE FROM news")
-    fun deleteAll()
+    suspend fun deleteAll()
 }

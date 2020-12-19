@@ -30,11 +30,11 @@ object AppModule {
             appContext,
             AppDatabase::class.java,
             AppConstants.DATABASE_NAME
-        ).fallbackToDestructiveMigration().build()
-
-    @Singleton
-    @Provides
-    fun providesNewsDao(db: AppDatabase): NewsDao = db.newsDao()
+        ).build()
+//
+//    @Singleton
+//    @Provides
+//    fun providesNewsDao(db: AppDatabase): NewsDao = db.newsDao()
 
     @Singleton
     @Provides

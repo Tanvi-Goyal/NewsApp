@@ -69,11 +69,21 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_extensions_version"
 
     //Room
-    implementation "androidx.room:room-rxjava2:$room_rxjava"
-    implementation "androidx.room:room-runtime:$room_version"
-    implementation "android.arch.persistence.room:rxjava2:$room_persistance"
+//    implementation "androidx.room:room-rxjava2:$room_rxjava"
+//    implementation "androidx.room:room-runtime:$room_version"
+//    implementation "android.arch.persistence.room:rxjava2:$room_persistance"
+//    implementation "androidx.room:room-coroutines:$room_version"
 //    implementation "androidx.room:room-ktx:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+//    kapt "androidx.room:room-compiler:$room_version"
+
+    implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+    kapt "androidx.room:room-compiler:$roomVersion"
+
+//
+//    implementation "androidx.paging:paging-runtime:$paging_version"
+//    implementation "androidx.paging:paging-rxjava2:$paging_version"
 
     //moshi
     implementation "com.squareup.moshi:moshi-kotlin:$moshi"
@@ -87,6 +97,8 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
 
     //Retrofit
+//    implementation "com.squareup.retrofit2:retrofit-mock:$retrofitVersion"
+
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_logging_version"
@@ -99,8 +111,6 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glide_version"
     kapt "com.github.bumptech.glide:compiler:$glide_version"
 
-    implementation "androidx.paging:paging-runtime:$paging_version"
-    implementation "androidx.paging:paging-rxjava2:$paging_version"
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

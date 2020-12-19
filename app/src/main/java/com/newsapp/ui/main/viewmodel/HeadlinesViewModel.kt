@@ -38,7 +38,7 @@ class HeadlinesViewModel @ViewModelInject constructor(
 
     fun deleteDB() {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteDB()
+//            repository.deleteDB()
         }
     }
 }

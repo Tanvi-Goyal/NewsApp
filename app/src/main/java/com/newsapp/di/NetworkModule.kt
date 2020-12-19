@@ -1,6 +1,6 @@
 package com.newsapp.di
 
-import com.newsapp.data.local.NewsDao
+import com.newsapp.data.local.AppDatabase
 import com.newsapp.data.remote.NewsService
 import com.newsapp.data.repositories.NewsRepository
 import com.newsapp.utils.ApiConstants
@@ -69,5 +69,5 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun providesNewsRepo(local: NewsDao, remote: NewsService) = NewsRepository(local, remote)
+    fun providesNewsRepo(db: AppDatabase, remote: NewsService) = NewsRepository(db, remote)
 }
